@@ -34,12 +34,13 @@ def scan(robot):
     flag = 0
     out = np.zeros((10,10))+9
     out[robot.x][robot.y] = 1
-    out[robot.x][robot.y] = 0
-    
+    for k in range(len(robot.shape)):
+        tempx = robot.shape[k][0]+robot.x
+        tempy = robot.shape[k][1]+robot.y
+        out[tempx][tempy] = 1
     while flag ==0:
         for i in range(robot.x -d, robot.x+d+1):
             for j in range(robot.y-d, robot.y+d+1):
-
                 if i<0:
                     i=0
                 if i>9:
@@ -55,10 +56,48 @@ def scan(robot):
     return out
             
         
+def move(robot, x, y):
+    out = np.zeros((10,10))
+    robot.x = x
+    robot.y = y
+    for i in range(len(robot.shape)):
+        tempx = robot.shape[i][0]+robot.x
+        tempy = robot.shape[i][1]+robot.y
+        out[tempx][tempy] = 1
+    return out
+    
+
+def check(robot):
+    out = [[0,0]] # Initialize list of valid steps
+    x = robot.x
+    y = robot.y
+    for i in range(len(robot.shape)):
+        tempx = robot.shape[i][0]+robot.x
+        tempy = robot.shape[i][1]+robot.y
+        if field[tempx-1][tempy+1]==0 or field[tempx-1][tempy+1]==1:
+            out.append([-1,1])
+        if field[tempx-1][tempy]==0 or field[tempx-1][tempy]==1:
+            out.append([-1,0])
+        if field[tempx+1][tempy+1]==0 or field[tempx+1][tempy+1]==1:
+            out.append([1,1])
+
+        if field[tempx-1][tempy]==0 or field[tempx-1][tempy]==1:
+            out.append([-1,0])
+        if field[tempx+1][tempy]==0 or field[tempx+1][tempy]==1:
+            out.append([1,0])
+
+        if field[tempx-1][tempy-1]==0 or field[tempx-1][tempy-1]==1:
+            out.append([-1,-1])
+        if field[tempx+1][tempy]==0 or field[tempx+1][tempy]==1:
+            out.append([1,0])
+        if field[tempx+1][tempy-1]==0 or field[tempx+1][tempy-1]==1:
+            out.append([1,-1])
+    robot.valid_steps = out
+        
+            
 
 
-
-
+        
 ## Other Definitions
 all_steps = [[1,1],[0,1],[-1,1],[1,0],[-1,0],[-1,1],[0,-1],[-1,-1]]
 
@@ -66,10 +105,10 @@ all_steps = [[1,1],[0,1],[-1,1],[1,0],[-1,0],[-1,1],[0,-1],[-1,-1]]
         #Robots
 R1 = Robot(31,31,[0,0],all_steps)
 R2 = Robot(14,16,[[0,0],[1,0],[1,1],[0,1]],all_steps)           
-R3 = Robot(15,49,[[0,0],[1,0]],all_steps)
+R3 = Robot(15,49,[[0,0],[0,1]],all_steps)
 R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
-tr = Robot(2,8,[0,0],all_steps) #Test Robot
+tr = Robot(2,4,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
 
 r1_shape = [[0,0],[0,0],[0,0],[0,0]]
 r2_shape = [[0,0],[1,0],[1,1],[1,1]]
