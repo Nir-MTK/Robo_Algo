@@ -4,9 +4,21 @@ import numpy as np
 import matplotlib
 
 field = np.zeros((10,10))
-field[2][8] = 1
+
 field[4][4] = 2
 field[3][4] = 2
+field[2][4] = 2
+field[1][4] = 2
+field[4][5] = 2
+field[3][5] = 2
+field[2][5] = 2
+field[1][5] = 2
+field[4][6] = 2
+field[3][6] = 2
+field[2][6] = 2
+field[1][6] = 2
+## Problem Definitions
+DIM = 10
 
 
 ## Class Definitions 
@@ -32,7 +44,7 @@ class Obsticle:
 def scan(robot):
     d =1
     flag = 0
-    out = np.zeros((10,10))+9
+    out = np.zeros((DIM,DIM))+9
     out[robot.x][robot.y] = 1
     for k in range(len(robot.shape)):
         tempx = robot.shape[k][0]+robot.x
@@ -43,12 +55,12 @@ def scan(robot):
             for j in range(robot.y-d, robot.y+d+1):
                 if i<0:
                     i=0
-                if i>9:
-                    i=9
+                if i>DIM-1:
+                    i=DIM-1
                 if j<0:
                     j=0
-                if j>9:
-                    j=9
+                if j>DIM-1:
+                    j=DIM
                 if field[i][j]==2:
                     flag = 1
                 out[i][j] = field[i][j]
@@ -57,7 +69,7 @@ def scan(robot):
             
         
 def move(robot, x, y):
-    out = np.zeros((10,10))
+    out = np.zeros((DIM,DIM))
     robot.x = x
     robot.y = y
     for i in range(len(robot.shape)):
@@ -92,7 +104,11 @@ def check(robot):
             out.append([1,0])
         if field[tempx+1][tempy-1]==0 or field[tempx+1][tempy-1]==1:
             out.append([1,-1])
-    robot.valid_steps = out
+    sort_out = [[0,0]]
+    for i in range(len(out)):
+        if out[i] not in sort_out:
+            sort_out.append(out[i])
+    robot.valid_steps = sort_out
         
             
 
@@ -109,6 +125,8 @@ R3 = Robot(15,49,[[0,0],[0,1]],all_steps)
 R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
 tr = Robot(2,4,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
+
+
 
 r1_shape = [[0,0],[0,0],[0,0],[0,0]]
 r2_shape = [[0,0],[1,0],[1,1],[1,1]]
