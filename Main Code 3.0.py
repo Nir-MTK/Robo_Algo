@@ -378,23 +378,33 @@ R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
 ## ========= MAIN SCRIPT========##
 
-while STEP<50:
+while STEP<100:
     
     print("STEP: ")
     print(STEP)
     print("Map Status: ")
     mapstatus()
 
-    UObstcl()
-    UScan()
-    UCheck()
+    UObstcl() # Update Field
+    UScan()     # Robot Scan
+    UCheck()    # Robots check for valid coordinates to moove to
 
-    move(R1,R1.x+R1.valid_steps[1][0],R1.x+R1.valid_steps[1][1])
-    move(R2,R2.x+R2.valid_steps[1][0],R2.x+R2.valid_steps[1][1])
-    move(R3,R3.x+R3.valid_steps[1][0],R3.x+R3.valid_steps[1][1])
-    move(R4,R4.x+R4.valid_steps[1][0],R4.x+R4.valid_steps[1][1])
+###MOVE EACH ROBOT RANDOMLY 
+##    move(R1,R1.x+R1.valid_steps[STEP%len(R1.valid_steps)][0],R1.x+R1.valid_steps[STEP%len(R1.valid_steps)][1])
+##    move(R2,R2.x+R2.valid_steps[STEP%len(R2.valid_steps)][0],R2.x+R1.valid_steps[STEP%len(R2.valid_steps)][1])
+##    move(R3,R3.x+R3.valid_steps[STEP%len(R3.valid_steps)][0],R3.x+R1.valid_steps[STEP%len(R3.valid_steps)][1])
+##    move(R4,R4.x+R4.valid_steps[STEP%len(R4.valid_steps)][0],R4.x+R1.valid_steps[STEP%len(R4.valid_steps)][1])
+
+# Move each robot to its 1st valid position:
+
+    move(R1,R1.x + R1.valid_steps[0][0],R1.y + R1.valid_steps[0][1])
+    move(R2,R2.x + R2.valid_steps[0][0],R2.y + R2.valid_steps[0][1])
+    move(R3,R3.x + R3.valid_steps[0][0],R3.y + R3.valid_steps[0][1])
+    move(R4,R4.x + R4.valid_steps[0][0],R4.y + R4.valid_steps[0][1])
+
     STEP+=1
 
+# ADD HERE EXPORT TO .CSV FILE
 
 
 
