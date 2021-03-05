@@ -3,8 +3,6 @@ import numpy as np
 #import pandas
 import matplotlib
 
-field = np.zeros((10,10))
-
 field[4][4] = 2
 field[3][4] = 2
 field[2][4] = 2
@@ -19,9 +17,9 @@ field[2][6] = 2
 field[1][6] = 2
 ## Problem Definitions
 DIM = 15
-
+oblist=[2,3,4]
 field = np.zeros((DIM,DIM))
-
+vmap = np.zeros((DIM,DIM))
 field[4][4] = 2
 field[3][4] = 2
 field[2][4] = 2
@@ -80,65 +78,131 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                 out[i][j] = field[i][j]
         d+=1
     d-=1
-    for i in range(len(out)):
-        for j in range(len(out)):
-            if out[i][j]==2:
-                x_val = i
-                y_val=j
-    horizontal_scan = robot.x-x_val
-    vertical_scan = robot.y-y_val
+## 2nd Scan
+    x=robot.x
+    y=robot.y
+    rf = 0
+    lf = 0
+    tf = 0
+    bf = 0
+    ## Scan to the RIGHT
+    while rf==0:
+        for i in range(x-d,x+d+1):
+            for j in range(y-d,len(field)):
+                if field[i][j]not in oblist:
+                    field[i][j]=0
+                else: rf=1
+    print('\n')
+    print('right scan')
+    field[x][y]=1
+    print(field)
 
-    if horizontal_scan>0:
-        horizontal_scan=-1
-    if horizontal_scan<0:
-        horizontal_scan=1
+    ## Scan to the LEFT
+    while lf==0:
+        for i in range(x-d,x+d+1):
+            for j in reversed(range(0,y-d)):
+                if field[i][j]not in oblist:
+                    field[i][j]=0
+                else: lf=1
+        lf=1
+        
+    print('\n')
+    print('left scan')
+    field[x][y]=1
+    print(field)
 
-    if vertical_scan>0:
-        vertical_scan=-1
-    if vertical_scan<0:
-        vertical_scan=1
+        ## Scan to the BOTTOM
+    while bf==0:
+        for i in range(x-d,DIM):
+            for j in range(y-d,y+d+1):
+                if field[i][j]not in oblist:
+                    field[i][j]=0
+                else: bf=1
+        bf=1
+    print('\n')
+    print('bottom scan')
+    field[x][y]=1
+    print(field)
 
-    line_flag=0
-    while line_flag==0:
-        if horizontal_scan==1:
-            for i in range(robot.x -d, robot.x+d+1):
-                for j in range(robot.y, DIM):
-                    if i<0:
-                        i=0
-                        line_flag = 1
-                    if i>DIM-1:
-                        i=DIM-1
-                        line_flag = 1
-                    if j<0:
-                        j=0
-                        line_flag = 1
-                    if j>DIM-1:
-                        j=DIM-1
-                        line_flag = 1
-                    if field[i][j]==2:
-                        line_flag = 1
-        out[i][j] = field[i][j]
-        line_flag=1
+        ## Scan to TOP
+    while tf==0:
+        for i in reversed(range(0,x-d)):
+            for j in range(y-d,y+d+1):
+                if field[i][j]not in oblist:
+                    field[i][j]=0
+                else: tf=1
+        tf=1        
+    print('\n')
+    print('top scan')
+    field[x][y]=1
+    print(field)
 
-        if vertical_scan==-1:
-            for i in range(robot.x, DIM):
-                for j in range(robot.y-d, robot.y+d+1):
-                    if i<0:
-                        i=0
-                        line_flag = 1
-                    if i>DIM-1:
-                        i=DIM-1
-                        line_flag = 1
-                    if j<0:
-                        j=0
-                        line_flag = 1
-                    if j>DIM-1:
-                        j=DIM-1
-                        line_flag = 1
-                    if field[i][j]==2:
-                        line_flag = 1
-        out[i][j] = field[i][j]
-        line_flag=1
+        
+
+
+
+
+
+    
+##    for i in range(len(out)):
+##        for j in range(len(out)):
+##            if out[i][j]==2:
+##                x_val = i
+##                y_val=j
+##    horizontal_scan = robot.x-x_val
+##    vertical_scan = robot.y-y_val
+##
+##    if horizontal_scan>0:
+##        horizontal_scan=-1
+##    if horizontal_scan<0:
+##        horizontal_scan=1
+##
+##    if vertical_scan>0:
+##        vertical_scan=-1
+##    if vertical_scan<0:
+##        vertical_scan=1
+##
+##    line_flag=0
+##    while line_flag==0:
+##        if horizontal_scan==1:
+##            for i in range(robot.x -d, robot.x+d+1):
+##                for j in range(robot.y, DIM):
+##                    if i<0:
+##                        i=0
+##                        line_flag = 1
+##                    if i>DIM-1:
+##                        i=DIM-1
+##                        line_flag = 1
+##                    if j<0:
+##                        j=0
+##                        line_flag = 1
+##                    if j>DIM-1:
+##                        j=DIM-1
+##                        line_flag = 1
+##                    if field[i][j]==2:
+##                        line_flag = 1
+##        out[i][j] = field[i][j]
+##        line_flag=1
+##
+##        if vertical_scan==-1:
+##            for i in range(robot.x, DIM):
+##                for j in range(robot.y-d, robot.y+d+1):
+##                    if i<0:
+##                        i=0
+##                        line_flag = 1
+##                    if i>DIM-1:
+##                        i=DIM-1
+##                        line_flag = 1
+##                    if j<0:
+##                        j=0
+##                        line_flag = 1
+##                    if j>DIM-1:
+##                        j=DIM-1
+##                        line_flag = 1
+##                    if field[i][j]==2:
+##                        line_flag = 1
+##        out[i][j] = field[i][j]
+##        line_flag=1
 
 
         
