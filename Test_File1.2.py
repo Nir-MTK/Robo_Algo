@@ -3,6 +3,12 @@ import numpy as np
 #import pandas
 import matplotlib
 
+## Problem Definitions
+DIM = 16
+field = np.zeros((DIM,DIM))
+vmap = np.zeros((DIM,DIM))+9
+oblist=[2,3,4]
+
 field[4][4] = 2
 field[3][4] = 2
 field[2][4] = 2
@@ -15,11 +21,9 @@ field[4][6] = 2
 field[3][6] = 2
 field[2][6] = 2
 field[1][6] = 2
-## Problem Definitions
-DIM = 15
-oblist=[2,3,4]
-field = np.zeros((DIM,DIM))
-vmap = np.zeros((DIM,DIM))
+
+
+
 field[4][4] = 2
 field[3][4] = 2
 field[2][4] = 2
@@ -76,6 +80,7 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                 if field[i][j]==2:
                     flag = 1
                 out[i][j] = field[i][j]
+                vmap[i][j]=field[i][j]
         d+=1
     d-=1
 ## 2nd Scan
@@ -92,50 +97,57 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                 if field[i][j]not in oblist:
                     field[i][j]=0
                 else: rf=1
-    print('\n')
-    print('right scan')
-    field[x][y]=1
-    print(field)
+##    print('\n')
+##    print('right scan')
+##    field[x][y]=1
+##    print(field)
 
     ## Scan to the LEFT
     while lf==0:
         for i in range(x-d,x+d+1):
             for j in reversed(range(0,y-d)):
                 if field[i][j]not in oblist:
-                    field[i][j]=0
+                    out[i][j]=0
+                    vmap[i][j]=field[i][j]
                 else: lf=1
         lf=1
         
-    print('\n')
-    print('left scan')
-    field[x][y]=1
-    print(field)
+##    print('\n')
+##    print('left scan')
+##    field[x][y]=1
+##    print(field)
 
         ## Scan to the BOTTOM
     while bf==0:
-        for i in range(x-d,DIM):
+        for i in range(x-d,DIM-1):
             for j in range(y-d,y+d+1):
+                if j>DIM-1:
+                    j=DIM-1
                 if field[i][j]not in oblist:
-                    field[i][j]=0
+                    out[i][j]=0
+                    vmap[i][j]=field[i][j]
                 else: bf=1
         bf=1
-    print('\n')
-    print('bottom scan')
-    field[x][y]=1
-    print(field)
+##    print('\n')
+##    print('bottom scan')
+##    field[x][y]=1
+##    print(field)
 
         ## Scan to TOP
     while tf==0:
         for i in reversed(range(0,x-d)):
-            for j in range(y-d,y+d+1):
+            for j in range(y-d+1,y+d-1):
+                if j>DIM-1:
+                    j=DIM-1
                 if field[i][j]not in oblist:
-                    field[i][j]=0
+                    out[i][j]=0
+                    vmap[i][j]=field[i][j]
                 else: tf=1
         tf=1        
-    print('\n')
-    print('top scan')
-    field[x][y]=1
-    print(field)
+##    print('\n')
+##    print('top scan')
+##    field[x][y]=1
+##    print(field)
 
         
 
@@ -204,8 +216,7 @@ def scan(robot): #Scan robot near field for obsticles and other robots
 ##        out[i][j] = field[i][j]
 ##        line_flag=1
 
-
-        
+    print('\n scan output:')    
     out[robot.x][robot.y] = 1
     return out #,x_val,y_val,d, horizontal_scan, vertical_scan
     
@@ -255,7 +266,28 @@ def check(robot): # Check valid steps for robot
             sort_out.append(out[i])
     robot.valid_steps = sort_out
         
-            
+def mapstatus():
+    section_1_stat = 0 # Top Left Section
+    for i in range(0,int(DIM/2)):
+        for j in range(0,int(DIM/2)):
+            if vmap[i][j]==9:
+                section_1_stat+=1
+        section_2_stat = 0 # Top Right Section
+    for i in range(0,int(DIM/2)):
+        for j in range(int(DIM/2),int(DIM)):
+            if vmap[i][j]==9:
+                section_2_stat+=1
+    section_3_stat = 0 # Bottom Left Section
+    for i in range(int(DIM/2),int(DIM)):
+        for j in range(0,int(DIM/2)):
+            if vmap[i][j]==9:
+                section_3_stat+=1
+    section_4_stat = 0 # Bottom Right Section
+    for i in range(int(DIM/2),int(DIM)):
+        for j in range(int(DIM/2),int(DIM)):
+            if vmap[i][j]==9:
+                section_4_stat+=1
+    return section_1_stat,section_2_stat,section_3_stat,section_4_stat
 
 
         
@@ -270,3 +302,23 @@ R3 = Robot(15,49,[[0,0],[0,1]],all_steps)
 R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
 tr = Robot(9,10,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
+
+
+## ========= MAIN SCRIPT========##
+
+##Update Field: ## TBD ##
+
+#### Update Virtual Map
+##scan(R1)
+##scan(R2)
+##scan(R3)
+##scan(R4)
+##
+#### Update Valid Steps foe each robot
+##check(R1)
+##check(R2)
+##check(R3)
+##check(R4)
+##
+#### 
+
