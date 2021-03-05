@@ -1,41 +1,66 @@
+## MAIN CODE V3: SW Integration test 1
+
 ## Python Initialization:
 import numpy as np
-#import pandas
+import pandas as pd
 import matplotlib
 
+## Field Generator:
+STEP=0
+ob4 = [[37,30],['U']] #coordinated of the center cell & mooving direction U/D
+ob31 = [[41,32],['R']] #coordinated of the center cell & mooving direction R/L
+ob32 = [[52,40],['R']] #coordinated of the center cell & mooving direction R/L
+
+field = np.genfromtxt('finalProjectMap.csv', delimiter=',')
+
+
+
+
+
+
+
+
+
+
 ## Problem Definitions
-DIM = 16
-field = np.zeros((DIM,DIM))
+DIM = len(field)
+#field = np.zeros((DIM,DIM))
 vmap = np.zeros((DIM,DIM))+9
 oblist=[2,3,4]
 
-field[4][4] = 2
-field[3][4] = 2
-field[2][4] = 2
-field[1][4] = 2
-field[4][5] = 2
-field[3][5] = 2
-field[2][5] = 2
-field[1][5] = 2
-field[4][6] = 2
-field[3][6] = 2
-field[2][6] = 2
-field[1][6] = 2
+##field[4][4] = 2
+##field[3][4] = 2
+##field[2][4] = 2
+##field[1][4] = 2
+##field[4][5] = 2
+##field[3][5] = 2
+##field[2][5] = 2
+##field[1][5] = 2
+##field[4][6] = 2
+##field[3][6] = 2
+##field[2][6] = 2
+##field[1][6] = 2
+##
+##field[4][4] = 2
+##field[3][4] = 2
+##field[2][4] = 2
+##field[1][4] = 2
+##field[4][5] = 2
+##field[3][5] = 2
+##field[2][5] = 2
+##field[1][5] = 2
+##field[4][6] = 2
+##field[3][6] = 2
+##field[2][6] = 2
+##field[1][6] = 2
+##
+##
+##field[12][12] = 2
+##field[13][13] = 2
+##field[12][13] = 2
+##field[13][12] = 2
 
 
-
-field[4][4] = 2
-field[3][4] = 2
-field[2][4] = 2
-field[1][4] = 2
-field[4][5] = 2
-field[3][5] = 2
-field[2][5] = 2
-field[1][5] = 2
-field[4][6] = 2
-field[3][6] = 2
-field[2][6] = 2
-field[1][6] = 2
 
 ## Class Definitions 
 class Robot:
@@ -97,10 +122,6 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                 if field[i][j]not in oblist:
                     field[i][j]=0
                 else: rf=1
-##    print('\n')
-##    print('right scan')
-##    field[x][y]=1
-##    print(field)
 
     ## Scan to the LEFT
     while lf==0:
@@ -112,11 +133,6 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                 else: lf=1
         lf=1
         
-##    print('\n')
-##    print('left scan')
-##    field[x][y]=1
-##    print(field)
-
         ## Scan to the BOTTOM
     while bf==0:
         for i in range(x-d,DIM-1):
@@ -128,10 +144,6 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                     vmap[i][j]=field[i][j]
                 else: bf=1
         bf=1
-##    print('\n')
-##    print('bottom scan')
-##    field[x][y]=1
-##    print(field)
 
         ## Scan to TOP
     while tf==0:
@@ -144,84 +156,12 @@ def scan(robot): #Scan robot near field for obsticles and other robots
                     vmap[i][j]=field[i][j]
                 else: tf=1
         tf=1        
-##    print('\n')
-##    print('top scan')
-##    field[x][y]=1
-##    print(field)
 
-        
-
-
-
-
-
-    
-##    for i in range(len(out)):
-##        for j in range(len(out)):
-##            if out[i][j]==2:
-##                x_val = i
-##                y_val=j
-##    horizontal_scan = robot.x-x_val
-##    vertical_scan = robot.y-y_val
-##
-##    if horizontal_scan>0:
-##        horizontal_scan=-1
-##    if horizontal_scan<0:
-##        horizontal_scan=1
-##
-##    if vertical_scan>0:
-##        vertical_scan=-1
-##    if vertical_scan<0:
-##        vertical_scan=1
-##
-##    line_flag=0
-##    while line_flag==0:
-##        if horizontal_scan==1:
-##            for i in range(robot.x -d, robot.x+d+1):
-##                for j in range(robot.y, DIM):
-##                    if i<0:
-##                        i=0
-##                        line_flag = 1
-##                    if i>DIM-1:
-##                        i=DIM-1
-##                        line_flag = 1
-##                    if j<0:
-##                        j=0
-##                        line_flag = 1
-##                    if j>DIM-1:
-##                        j=DIM-1
-##                        line_flag = 1
-##                    if field[i][j]==2:
-##                        line_flag = 1
-##        out[i][j] = field[i][j]
-##        line_flag=1
-##
-##        if vertical_scan==-1:
-##            for i in range(robot.x, DIM):
-##                for j in range(robot.y-d, robot.y+d+1):
-##                    if i<0:
-##                        i=0
-##                        line_flag = 1
-##                    if i>DIM-1:
-##                        i=DIM-1
-##                        line_flag = 1
-##                    if j<0:
-##                        j=0
-##                        line_flag = 1
-##                    if j>DIM-1:
-##                        j=DIM-1
-##                        line_flag = 1
-##                    if field[i][j]==2:
-##                        line_flag = 1
-##        out[i][j] = field[i][j]
-##        line_flag=1
 
     print('\n scan output:')    
     out[robot.x][robot.y] = 1
     return out #,x_val,y_val,d, horizontal_scan, vertical_scan
-    
-            
-        
+                      
 def move(robot, x, y): #Move robot position to x,y
     out = np.zeros((DIM,DIM))
     robot.x = x
@@ -301,7 +241,7 @@ R2 = Robot(14,16,[[0,0],[1,0],[1,1],[0,1]],all_steps)
 R3 = Robot(15,49,[[0,0],[0,1]],all_steps)
 R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
-tr = Robot(9,10,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
+tr = Robot(7,8,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
 
 
 ## ========= MAIN SCRIPT========##
