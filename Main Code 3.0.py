@@ -13,54 +13,160 @@ ob32 = [[52,40],['R']] #coordinated of the center cell & mooving direction R/L
 
 field = np.genfromtxt('finalProjectMap.csv', delimiter=',')
 
+# Obsticle Position Update Functions
+def obstcl4(step):
+    STEP=step
+    if STEP%4==0:
+
+        if ob4[1][0]=='U':
+            print(ob4[0][0])
+            
+            if ob4[0][0]==0:
+                ob4[1][0]='D'
+                print(ob4[1][0])
+                
+            if ob4[0][0]>0: #if the "row" location is grather than 0
+                
+                if field[ ob4[0][0]-1 ][ ob4[0][1] ]==0 and field[ ob4[0][0]-1 ][ ob4[0][1]+1 ]==0 and field[ ob4[0][0]-1 ][ ob4[0][1]-1 ]==0: #if the path up is clear
+                    
+                    field[ ob4[0][0]][ ob4[0][1]-1 ]=0
+                    field[ ob4[0][0]][ ob4[0][1] ]=0
+                    field[ ob4[0][0]][ ob4[0][1]+1 ]=0
+                    
+                    field[ ob4[0][0]-1 ][ ob4[0][1]-1 ]=4
+                    field[ ob4[0][0]-1][ ob4[0][1] ]=4
+                    field[ ob4[0][0]-1][ ob4[0][1]+1 ]=4
+                    ob4[0][0]=ob4[0][0]-1 #move up
+                    
+                if (field[ ob4[0][0]-1 ][ ob4[0][1] ]!=0 or field[ ob4[0][0]-1 ][ ob4[0][1]+1 ]!=0 or field[ ob4[0][0]-1 ][ ob4[0][1]-1 ]!=0) and ob4[0][0]!=0: #if the path up is not clear
+                    ob4[1][0]='D'
+            
+        if ob4[1][0]=='D':
+
+            print("moving down")
+            print(ob4[0][0])
+            
+            if ob4[0][0]==(len(field)-2):
+                ob4[1][0]='U'
+                print(ob4[1][0])
+
+            if field[ ob4[0][0]+1 ][ ob4[0][1] ]==0 and field[ ob4[0][0]+1 ][ ob4[0][1]+1 ]==0 and field[ ob4[0][0]+1 ][ ob4[0][1]-1 ]==0: #if the path down is clear
+
+                field[ ob4[0][0]][ ob4[0][1]-1 ]=0
+                field[ ob4[0][0]][ ob4[0][1] ]=0
+                field[ ob4[0][0]][ ob4[0][1]+1 ]=0
+
+                field[ ob4[0][0]+1 ][ ob4[0][1]-1 ]=4
+                field[ ob4[0][0]+1][ ob4[0][1] ]=4
+                field[ ob4[0][0]+1][ ob4[0][1]+1 ]=4
+                ob4[0][0]=ob4[0][0]+1 #move down
+                
+            if (field[ ob4[0][0]+1 ][ ob4[0][1] ]!=0 or field[ ob4[0][0]+1 ][ ob4[0][1]+1 ]!=0 or field[ ob4[0][0]+1 ][ ob4[0][1]-1 ]!=0) and ob4[0][0]!=(len(field)-1): #if the path down is clear
+                ob4[1][0]='U'
 
 
 
+def obstcl31(step):
+    STEP=step
+    if STEP%2==0:
 
+        if ob31[1][0]=='L':
+            print(ob31[0][0])
+            
+            if ob31[0][1]==0:
+                ob31[1][0]='R'
+                print(ob31[1][0])
+                
+            if ob31[0][1]>0: #if the "col" location is grather than 0
+                
+                if field[ ob31[0][0] ][ ob31[0][1]-1 ]==0: #if the path L is clear
+                    
+                    field[ ob31[0][0]][ ob31[0][1] ]=0
+                    field[ ob31[0][0] ][ ob31[0][1]-1 ]=3
+                    ob31[0][1]=ob31[0][1]-1 #move left
+                    
+                if (field[ ob31[0][0] ][ ob31[0][1]-1 ]!=0) and ob31[0][1]!=0: #if the path L is not clear
+                    ob31[1][0]='R'
+            
+        if ob31[1][0]=='R':
+            
+            if ob31[0][1]==(len(field)-2):
+                ob31[1][0]='L'
+                print(ob31[1][0])
 
+            if field[ ob31[0][0] ][ ob31[0][1]+1 ]==0: #if the path R is clear
+                    
+                    field[ ob31[0][0]][ ob31[0][1] ]=0
+                    field[ ob31[0][0] ][ ob31[0][1]+1 ]=3
+                    ob31[0][1]=ob31[0][1]+1 #move right
+                    
+            if ob31[0][1]!=(len(field)-1):    
+                if (field[ ob31[0][0] ][ ob31[0][1]+1 ]!=0): #if the path L is not clear
+                    ob31[1][0]='L'
+                    
+                    
+def obstcl32(step):
+    STEP=step
+    if STEP%2==0:
 
+        if ob32[1][0]=='L':
+            print(ob32[0][0])
+            
+            if ob32[0][1]==0:
+                ob32[1][0]='R'
+                print(ob32[1][0])
+                
+            if ob32[0][1]>0: #if the "col" location is grather than 0
+                
+                if field[ ob32[0][0] ][ ob32[0][1]-1 ]==0: #if the path L is clear
+                    
+                    field[ ob32[0][0]][ ob32[0][1] ]=0
+                    field[ ob32[0][0] ][ ob32[0][1]-1 ]=3
+                    ob32[0][1]=ob32[0][1]-1 #move left
+                    
+                if (field[ ob32[0][0] ][ ob32[0][1]-1 ]!=0) and ob32[0][1]!=0: #if the path L is not clear
+                    ob32[1][0]='R'
+            
+        if ob32[1][0]=='R':
+            
+            if ob32[0][1]==(len(field)-2):
+                ob32[1][0]='L'
+                print(ob32[1][0])
 
+            if field[ ob32[0][0] ][ ob32[0][1]+1 ]==0: #if the path R is clear
+                    
+                    field[ ob32[0][0]][ ob32[0][1] ]=0
+                    field[ ob32[0][0] ][ ob32[0][1]+1 ]=3
+                    ob32[0][1]=ob32[0][1]+1 #move right
+                    
+            if ob32[0][1]!=(len(field)-1):    
+                if (field[ ob32[0][0] ][ ob32[0][1]+1 ]!=0): #if the path R is not clear
+                    ob32[1][0]='L'
 
+                          
+## Ultra-Functions
+def UObstcl():
+    obstcl32(STEP)
+    obstcl4(STEP)
+    obstcl31(STEP)
 
+def UScan():
+    scan(R1)
+    scan(R2)
+    scan(R3)
+    scan(R4)
+
+def UCheck():
+    check(R1)
+    check(R2)
+    check(R3)
+    check(R4)
+    
 ## Problem Definitions
 DIM = len(field)
-#field = np.zeros((DIM,DIM))
+
 vmap = np.zeros((DIM,DIM))+9
 oblist=[2,3,4]
-
-##field[4][4] = 2
-##field[3][4] = 2
-##field[2][4] = 2
-##field[1][4] = 2
-##field[4][5] = 2
-##field[3][5] = 2
-##field[2][5] = 2
-##field[1][5] = 2
-##field[4][6] = 2
-##field[3][6] = 2
-##field[2][6] = 2
-##field[1][6] = 2
-##
-##field[4][4] = 2
-##field[3][4] = 2
-##field[2][4] = 2
-##field[1][4] = 2
-##field[4][5] = 2
-##field[3][5] = 2
-##field[2][5] = 2
-##field[1][5] = 2
-##field[4][6] = 2
-##field[3][6] = 2
-##field[2][6] = 2
-##field[1][6] = 2
-##
-##
-##field[12][12] = 2
-##field[13][13] = 2
-##field[12][13] = 2
-##field[13][12] = 2
-
-
 
 ## Class Definitions 
 class Robot:
@@ -118,7 +224,15 @@ def scan(robot): #Scan robot near field for obsticles and other robots
     ## Scan to the RIGHT
     while rf==0:
         for i in range(x-d,x+d+1):
+            if i>DIM-1:
+                i=DIM-1
+            if i<0:
+                i=0
             for j in range(y-d,len(field)):
+                if j>DIM-1:
+                    j=DIM-1
+                if j<0:
+                    j=0
                 if field[i][j]not in oblist:
                     field[i][j]=0
                 else: rf=1
@@ -126,7 +240,15 @@ def scan(robot): #Scan robot near field for obsticles and other robots
     ## Scan to the LEFT
     while lf==0:
         for i in range(x-d,x+d+1):
+            if i>DIM-1:
+                i=DIM-1
+            if i<0:
+                i=0
             for j in reversed(range(0,y-d)):
+                if j>DIM-1:
+                    j=DIM-1
+                if j<0:
+                    j=0
                 if field[i][j]not in oblist:
                     out[i][j]=0
                     vmap[i][j]=field[i][j]
@@ -136,9 +258,15 @@ def scan(robot): #Scan robot near field for obsticles and other robots
         ## Scan to the BOTTOM
     while bf==0:
         for i in range(x-d,DIM-1):
+            if i>DIM-1:
+                i=DIM-1
+            if i<0:
+                i=0
             for j in range(y-d,y+d+1):
                 if j>DIM-1:
                     j=DIM-1
+                if j<0:
+                    j=0
                 if field[i][j]not in oblist:
                     out[i][j]=0
                     vmap[i][j]=field[i][j]
@@ -148,9 +276,15 @@ def scan(robot): #Scan robot near field for obsticles and other robots
         ## Scan to TOP
     while tf==0:
         for i in reversed(range(0,x-d)):
+            if i>DIM-1:
+                i=DIM-1
+            if i<0:
+                i=0
             for j in range(y-d+1,y+d-1):
                 if j>DIM-1:
                     j=DIM-1
+                if j<0:
+                    j=0
                 if field[i][j]not in oblist:
                     out[i][j]=0
                     vmap[i][j]=field[i][j]
@@ -160,7 +294,7 @@ def scan(robot): #Scan robot near field for obsticles and other robots
 
     print('\n scan output:')    
     out[robot.x][robot.y] = 1
-    return out #,x_val,y_val,d, horizontal_scan, vertical_scan
+    #return out #,x_val,y_val,d, horizontal_scan, vertical_scan
                       
 def move(robot, x, y): #Move robot position to x,y
     out = np.zeros((DIM,DIM))
@@ -227,6 +361,7 @@ def mapstatus():
         for j in range(int(DIM/2),int(DIM)):
             if vmap[i][j]==9:
                 section_4_stat+=1
+    print([section_1_stat,section_2_stat,section_3_stat,section_4_stat])
     return section_1_stat,section_2_stat,section_3_stat,section_4_stat
 
 
@@ -236,29 +371,57 @@ all_steps = [[1,1],[0,1],[-1,1],[1,0],[-1,0],[-1,1],[0,-1],[-1,-1]]
 
 ## Build Map
         #Robots
-R1 = Robot(31,31,[0,0],all_steps)
+R1 = Robot(31,31,[[0,0]],all_steps)
 R2 = Robot(14,16,[[0,0],[1,0],[1,1],[0,1]],all_steps)           
 R3 = Robot(15,49,[[0,0],[0,1]],all_steps)
 R4 = Robot(37,28,[[0,0],[0,1],[1,0]],all_steps)
 
-tr = Robot(7,8,[[0,0],[0,1],[1,1]],all_steps) #Test Robot
-
-
 ## ========= MAIN SCRIPT========##
 
-##Update Field: ## TBD ##
+while STEP<50:
+    
+    print("STEP: ")
+    print(STEP)
+    print("Map Status: ")
+    mapstatus()
 
-#### Update Virtual Map
-##scan(R1)
-##scan(R2)
-##scan(R3)
-##scan(R4)
-##
-#### Update Valid Steps foe each robot
-##check(R1)
-##check(R2)
-##check(R3)
-##check(R4)
-##
-#### 
+    UObstcl()
+    UScan()
+    UCheck()
 
+    move(R1,R1.x+R1.valid_steps[1][0],R1.x+R1.valid_steps[1][1])
+    move(R2,R2.x+R2.valid_steps[1][0],R2.x+R2.valid_steps[1][1])
+    move(R3,R3.x+R3.valid_steps[1][0],R3.x+R3.valid_steps[1][1])
+    move(R4,R4.x+R4.valid_steps[1][0],R4.x+R4.valid_steps[1][1])
+    STEP+=1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
