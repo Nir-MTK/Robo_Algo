@@ -99,22 +99,49 @@ def scan(robot): #Scan robot near field for obsticles and other robots
         vertical_scan=1
 
     line_flag=0
-    if line_flag==0:
+    while line_flag==0:
         if horizontal_scan==1:
             for i in range(robot.x -d, robot.x+d+1):
                 for j in range(robot.y, DIM):
                     if i<0:
                         i=0
+                        line_flag = 1
                     if i>DIM-1:
                         i=DIM-1
+                        line_flag = 1
                     if j<0:
                         j=0
+                        line_flag = 1
                     if j>DIM-1:
                         j=DIM-1
+                        line_flag = 1
                     if field[i][j]==2:
                         line_flag = 1
-                        out[i][j] = field[i][j]
+        out[i][j] = field[i][j]
+        line_flag=1
 
+        if vertical_scan==-1:
+            for i in range(robot.x, DIM):
+                for j in range(robot.y-d, robot.y+d+1):
+                    if i<0:
+                        i=0
+                        line_flag = 1
+                    if i>DIM-1:
+                        i=DIM-1
+                        line_flag = 1
+                    if j<0:
+                        j=0
+                        line_flag = 1
+                    if j>DIM-1:
+                        j=DIM-1
+                        line_flag = 1
+                    if field[i][j]==2:
+                        line_flag = 1
+        out[i][j] = field[i][j]
+        line_flag=1
+
+
+        
     out[robot.x][robot.y] = 1
     return out #,x_val,y_val,d, horizontal_scan, vertical_scan
     
